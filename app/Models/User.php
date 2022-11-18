@@ -21,6 +21,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      * @var array
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
@@ -52,6 +53,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      */
     protected $appends = [
         'photo_url',
+        'is_admin',
     ];
 
     /**
@@ -65,6 +67,16 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
             md5(strtolower($this->email)),
             $this->name ? urlencode("https://ui-avatars.com/api/$this->name") : 'mp',
         ]);
+    }
+
+    /**
+     * Get the user type.
+     *
+     * @return boolean
+     */
+    public function getIsAdminAttribute()
+    {
+        return $this->role == 2 ? true : false;
     }
 
     /**
@@ -112,5 +124,15 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function websites()
+    {
+        return $this->hasMany('App\Models\Website', 'author_id', 'id');
+    }
+
+    public function websiteSubscribed()
+    {
+        return $this->hasMany('App\Models\WebsiteSubscriber', 'user_id', 'id');
     }
 }

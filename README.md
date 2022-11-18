@@ -1,15 +1,5 @@
 # Laravel-Vue SPA 
 
-<a href="https://github.com/cretueusebiu/laravel-vue-spa/actions"><img src="https://github.com/cretueusebiu/laravel-vue-spa/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/cretueusebiu/laravel-vue-spa"><img src="https://poser.pugx.org/cretueusebiu/laravel-vue-spa/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/cretueusebiu/laravel-vue-spa"><img src="https://poser.pugx.org/cretueusebiu/laravel-vue-spa/v/stable.svg" alt="Latest Stable Version"></a>
-
-> A Laravel-Vue SPA starter kit.
-
-<p align="center">
-<img src="https://i.imgur.com/NHFTsGt.png">
-</p>
-
 ## Features
 
 - Laravel 8
@@ -42,30 +32,15 @@ npm run dev
 npm run build
 ```
 
-## Socialite
-
-This project comes with GitHub as an example for [Laravel Socialite](https://laravel.com/docs/5.8/socialite).
-
-To enable the provider create a new GitHub application and use `https://example.com/api/oauth/github/callback` as the Authorization callback URL.
-
-Edit `.env` and set `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` with the keys form your GitHub application.
-
-For other providers you may need to set the appropriate keys in `config/services.php` and redirect url in `OAuthController.php`.
-
-## Email Verification
-
-To enable email verification make sure that your `App\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract.
-
-## Testing
+## Mail Setup
+- Create or Use your own mailtrap account for testing
+- Change the '*' with your username and password from your mailtrap account
 
 ```bash
-# Run unit and feature tests
-vendor/bin/phpunit
-
-# Run Dusk browser tests
-php artisan dusk
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=**************
+MAIL_PASSWORD=**************
+MAIL_ENCRYPTION=tls
 ```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.

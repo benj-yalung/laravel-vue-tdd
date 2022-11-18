@@ -23,7 +23,15 @@ export const mutations = {
   },
 
   [types.FETCH_USER_SUCCESS] (state, { user }) {
-    state.user = user
+    state.user = user.data
+    // store user to localstorage
+    const authUser = {
+      token: state.token,
+      data: {
+        user: user
+      }
+    }
+    window.localStorage.setItem('lbUser', JSON.stringify(authUser))
   },
 
   [types.FETCH_USER_FAILURE] (state) {
@@ -35,11 +43,12 @@ export const mutations = {
     state.user = null
     state.token = null
 
+    window.localStorage.removeItem('lbUser')
     Cookies.remove('token')
   },
 
   [types.UPDATE_USER] (state, { user }) {
-    state.user = user
+    state.user = user.data
   }
 }
 

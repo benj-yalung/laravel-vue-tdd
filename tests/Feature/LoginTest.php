@@ -3,38 +3,51 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LoginTest extends TestCase
 {
+    use RefreshDatabase;
+    use WithFaker;
+
+    /**
+     * @var User
+     */
+    protected $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
+
     /** @test */
     public function authenticate()
     {
-        $user = User::factory()->create();
-
         $this->postJson('/api/login', [
-            'email' => $user->email,
+            'email' => $this->user->email,
             'password' => 'password',
         ])
             ->assertSuccessful()
-            ->assertJsonStructure(['token', 'expires_in'])
-            ->assertJson(['token_type' => 'bearer']);
+            ->assertJsonStructure(['token', 'expires_in']);
     }
 
     /** @test */
     public function fetch_the_current_user()
     {
-        $this->actingAs(User::factory()->create())
+        $this->actingAs($this->user)
             ->getJson('/api/user')
-            ->assertSuccessful()
-            ->assertJsonStructure(['id', 'name', 'email']);
+            ->assertSuccessful();
     }
 
     /** @test */
     public function log_out()
     {
         $token = $this->postJson('/api/login', [
-            'email' => User::factory()->create()->email,
+            'email' => $this->user->email,
             'password' => 'password',
         ])->json()['token'];
 

@@ -48,6 +48,40 @@ function createRouter () {
  * @param {Function} next
  */
 async function beforeEach (to, from, next) {
+  if (to.meta.requiresAuth) {
+    const authUser = JSON.parse(window.localStorage.getItem('lbUser'))
+
+    if (!authUser || !authUser.token) {
+      next({ name: 'login' });
+  
+    }
+    else if(to.meta.adminAuth && to.meta.userAuth){
+      next();
+    }
+    else if(to.meta.adminAuth){
+      const authUser = JSON.parse(window.localStorage.getItem('lbUser')).data.user;
+
+      if (authUser.data.is_admin) {
+        next();
+      }else{
+        next('/dashboard');
+      }
+    }
+    else if(to.meta.userAuth){
+      const authUser = JSON.parse(window.localStorage.getItem('lbUser')).data.user;
+      
+      if (!authUser.data.is_admin) {
+        next();
+      }else{
+        console.log("I'm in admin")
+        next('/admin/dashboard');
+      }
+    }
+  }else{
+    next();
+  }
+
+  // Default Middleware
   let components = []
 
   try {

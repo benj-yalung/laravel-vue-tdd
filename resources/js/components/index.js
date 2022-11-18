@@ -13,7 +13,7 @@ import { HasError, AlertError, AlertSuccess } from 'vform/components/bootstrap5'
   Checkbox,
   HasError,
   AlertError,
-  AlertSuccess
+  AlertSuccess,
 ].forEach(Component => {
   Vue.component(Component.name, Component)
 })

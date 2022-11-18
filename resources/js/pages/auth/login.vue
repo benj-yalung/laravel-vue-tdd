@@ -56,6 +56,7 @@
 import Form from 'vform'
 import Cookies from 'js-cookie'
 import LoginWithGithub from '~/components/LoginWithGithub'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -74,6 +75,10 @@ export default {
       password: ''
     }),
     remember: false
+  }),
+
+  computed: mapGetters({
+    user: 'auth/user'
   }),
 
   methods: {
@@ -101,7 +106,8 @@ export default {
         Cookies.remove('intended_url')
         this.$router.push({ path: intendedUrl })
       } else {
-        this.$router.push({ name: 'home' })
+        console.log(this.user)
+        this.$router.push({ name: this.user.is_admin ? "admin.dashboard" : "user.dashboard" })
       }
     }
   }
