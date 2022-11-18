@@ -30,7 +30,6 @@ class WebsitePostMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('TDD Test.com')
-                    ->view('emails.websitePostMail');
+        return $this->view('emails.websitePostMail');
     }
 }

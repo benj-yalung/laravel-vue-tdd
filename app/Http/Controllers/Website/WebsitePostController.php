@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use App\Models\WebsiteSubscriber;
 use App\Models\WebsitePost;
 use App\Http\Requests\WebsitePostRequest;
+use App\Jobs\TestEmailJob;
 
 class WebsitePostController extends Controller
 {
@@ -97,11 +98,12 @@ class WebsitePostController extends Controller
        
         foreach ($subscribers as $key => $subscriber) {
             $details = [
+                'email'         => $subscriber->user->email,
                 'title'         => $request->input('title'),
                 'description'   => $request->input('description'),
             ];
 
-            \Mail::to($subscriber->user->email)->send(new \App\Mail\WebsitePostMail($details));
+            TestEmailJob::dispatch($details);
         }
 
         return $this->result->created($subscribers, 'Website post has been saved!');
